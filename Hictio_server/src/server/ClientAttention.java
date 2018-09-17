@@ -26,13 +26,17 @@ public class ClientAttention extends Observable implements Runnable {
 		return id;
 	}
 	
+	public Socket getSocket_atention() {
+		return socket_atention;
+	}
+	
 	@Override
 	public void run() {
 		while(online) {
 			//Blocking operation, ClientAttention is waiting for the client
 			receiveString();
 			try {
-				Thread.sleep(100);
+				Thread.sleep(60);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
@@ -74,18 +78,23 @@ public class ClientAttention extends Observable implements Runnable {
 		DataInputStream input = null;
 		try {
 			input = new DataInputStream(socket_atention.getInputStream());
-			int val = Integer.parseInt(input.readUTF());
-			System.out.println("Receive: "+val);
+			//int val = Integer.parseInt(input.readUTF());
+			String val = input.readUTF();
+			System.out.println("Receive: "+val+" from user "+this.getId());
+			this.sendString("Hey from the server side");
 		}catch (IOException e) {
 			disconnect_client(input);
 		}
 	}
 	
-	private void sendString(String message) {
+	public void sendString(String message) {
 		try {
 			DataOutputStream output = new DataOutputStream(socket_atention.getOutputStream());
 			output.writeUTF(message);
-			System.out.println("Message send to client: "+this.id);
+			//=========================
+			output.flush();
+			//=========================
+			System.out.println("Message: -"+message+"- send to client: "+this.id);
 		}catch (IOException e) {
 			e.printStackTrace();
 		}

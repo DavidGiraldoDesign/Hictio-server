@@ -108,5 +108,24 @@ public class Server extends Observable implements Runnable, Observer {
 			
 		}
 	}
+	
+	public void closeServer() {
+		
+		try {
+			for (ClientAttention clientAttention : clients_attentios) {
+				clientAttention.sendString("x");
+				clientAttention.getSocket_atention().close();
+			}
+			this.online=false;
+			//this.serverSocket.close();
+			this.serverSocket = null;
+			System.err.println("ServerSocket closed");
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	}
 
 }

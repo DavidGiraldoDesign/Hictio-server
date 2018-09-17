@@ -46,5 +46,10 @@ public class Logic implements Observer {
 		// TODO Auto-generated method stub
 
 	}
+	
+	public void shotdown() {
+		System.out.println("ShotDown");
+		Server.getInstance(this, 5000).closeServer();
+	}
 
 }
