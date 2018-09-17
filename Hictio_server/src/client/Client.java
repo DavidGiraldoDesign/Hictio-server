@@ -16,19 +16,19 @@ public class Client extends Observable implements Runnable {
 	private int port;
 
 	private Client(Observer observer) {
-		System.out.println("constructor");
+		// System.out.println("constructor");
 		addObserver(observer);
 		this.port = 5000;
 		// this.startSocket();
 	}
 
 	public void startSocket() {
-		if (this.socket==null) {
+		if (this.socket == null) {
 			try {
 				System.out.println("Starting to socket");
-				//Use "127.0.0.1" to connect to the local host - The pc itself
+				// Use "127.0.0.1" to connect to the local host - The pc itself
 				this.socket = new Socket(InetAddress.getByName("192.168.1.112"), this.port);
-				//Use the IP that shows the Server console to connect.
+				// Use the IP that shows the Server console to connect.
 				connectionRequest();
 				online = true;
 				System.out.println("Connection state: " + online);
@@ -38,31 +38,34 @@ public class Client extends Observable implements Runnable {
 				System.err.println("Connection state: " + online);
 				clearChanged();
 			}
-		}else {
+		} else {
 			System.out.println("You are aready connected");
 		}
-		
+
 	}
 
 	public static Client getInstance(Observer observer) {
-		System.out.println("Enter to getInstance");
-		System.err.println("Online: "+online + " Instance: " + client);
+		// System.out.println("Enter to getInstance");
+		// System.err.println("Online: "+online + " Instance: " + client);
 		if (client == null && online == false) {
 			client = new Client(observer);
 			new Thread(client).start();
-			System.err.println("Online: "+online + " Instance: " + client);
+			// System.err.println("Online: "+online + " Instance: " + client);
 		}
 		return client;
 	}
 
 	@Override
 	public void run() {
-
-		while (online) {
+		while (true) {
 			// =>
-			this.receiveString();
+			System.out.println("hey");
+			if (online) {
+				this.receiveString();
+			}
+
 			try {
-				Thread.sleep(100);
+				Thread.sleep(60);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
@@ -94,7 +97,7 @@ public class Client extends Observable implements Runnable {
 			e.printStackTrace();
 			online = false;
 			this.forceDisconnection();
-			//=========================> little change
+			// =========================> little change
 		}
 	}
 
@@ -122,7 +125,7 @@ public class Client extends Observable implements Runnable {
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-		}else {
+		} else {
 			System.out.println("You are aready disconnected");
 		}
 
