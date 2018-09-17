@@ -31,6 +31,9 @@ public class Client extends Observable implements Runnable {
 				// Use the IP that shows the Server console to connect.
 				connectionRequest();
 				online = true;
+				// ===================================
+				new Thread(client).start();
+				// ===================================
 				System.out.println("Connection state: " + online);
 			} catch (IOException e) {
 				setChanged();
@@ -49,7 +52,7 @@ public class Client extends Observable implements Runnable {
 		// System.err.println("Online: "+online + " Instance: " + client);
 		if (client == null && online == false) {
 			client = new Client(observer);
-			new Thread(client).start();
+			// new Thread(client).start();
 			// System.err.println("Online: "+online + " Instance: " + client);
 		}
 		return client;
@@ -57,12 +60,12 @@ public class Client extends Observable implements Runnable {
 
 	@Override
 	public void run() {
-		while (true) {
+		while (online) {
 			// =>
 			System.out.println("hey");
-			if (online) {
-				this.receiveString();
-			}
+			// if (online) {
+			this.receiveString();
+			// }
 
 			try {
 				Thread.sleep(60);
@@ -78,6 +81,9 @@ public class Client extends Observable implements Runnable {
 			DataInputStream input = new DataInputStream(this.socket.getInputStream());
 			String message = input.readUTF();
 			System.out.println(message);
+			if(message.contains("x")){
+				this.forceDisconnection();
+			}
 		} catch (IOException e) {
 			online = false;
 			setChanged();
@@ -88,17 +94,20 @@ public class Client extends Observable implements Runnable {
 	}
 
 	public void sendString(String message) {
-		try {
-			DataOutputStream output = new DataOutputStream(socket.getOutputStream());
-			output.writeUTF(message);
-			output.flush();
-			System.out.println("Send: " + message);
-		} catch (IOException e) {
-			e.printStackTrace();
-			online = false;
-			this.forceDisconnection();
-			// =========================> little change
+		if (this.socket != null) {
+			try {
+				DataOutputStream output = new DataOutputStream(socket.getOutputStream());
+				output.writeUTF(message);
+				output.flush();
+				System.out.println("Send: " + message);
+			} catch (IOException e) {
+				e.printStackTrace();
+				online = false;
+				this.forceDisconnection();
+				// =========================> little change
+			}
 		}
+
 	}
 
 	private void connectionRequest() {
