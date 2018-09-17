@@ -8,7 +8,7 @@ public class MainClient extends PApplet {
 	
 	public static void main(String[] args) {
 		PApplet.main("client.MainClient");
-
+		
 	}
 	
 	@Override

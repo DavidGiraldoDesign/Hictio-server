@@ -27,7 +27,7 @@ public class Client extends Observable implements Runnable {
 			try {
 				System.out.println("Starting to socket");
 				//Use "127.0.0.1" to connect to the local host - The pc itself
-				this.socket = new Socket(InetAddress.getByName("127.0.0.1"), this.port);
+				this.socket = new Socket(InetAddress.getByName("192.168.1.112"), this.port);
 				//Use the IP that shows the Server console to connect.
 				connectionRequest();
 				online = true;
@@ -93,7 +93,8 @@ public class Client extends Observable implements Runnable {
 		} catch (IOException e) {
 			e.printStackTrace();
 			online = false;
-
+			this.forceDisconnection();
+			//=========================> little change
 		}
 	}
 

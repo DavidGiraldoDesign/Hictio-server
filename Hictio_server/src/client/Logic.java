@@ -48,7 +48,7 @@ public class Logic implements Observer {
 					c.forceDisconnection();
 					break;
 				case 2:
-
+					c.sendString("fish");
 					break;
 				case 3:
 
