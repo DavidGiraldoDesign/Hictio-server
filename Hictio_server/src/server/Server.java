@@ -1,8 +1,10 @@
 package server;
 
 import java.io.IOException;
+import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.UnknownHostException;
 import java.util.LinkedList;
 import java.util.Observable;
 import java.util.Observer;
@@ -24,7 +26,12 @@ public class Server extends Observable implements Runnable, Observer {
 		startServerSocket();
 		this.clients_attentios = new LinkedList<ClientAttention>();
 		this.online = true;
-		System.out.println("server_online");
+		try {
+			System.out.println("server_online at: "+ InetAddress.getLocalHost());
+		} catch (UnknownHostException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	private void startServerSocket() {

@@ -15,7 +15,7 @@ public class MainServer extends PApplet { // Main have to extend from Processing
 	public void settings() {
 		// TODO Auto-generated method stub
 		super.settings();
-		size(800, 800);
+		size(500, 500);
 	}
 
 	@Override
