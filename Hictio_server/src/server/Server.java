@@ -11,9 +11,6 @@ import java.util.Observer;
 
 public class Server extends Observable implements Runnable, Observer {
 
-	/*
-	 * Se utiliza el modelo Singleton:. Clase privada Metodo que se autoinstancia
-	 */
 	private ServerSocket serverSocket;
 	private LinkedList<ClientAttention> clients_attentios;
 	private static Server server = null;
@@ -26,19 +23,18 @@ public class Server extends Observable implements Runnable, Observer {
 		startServerSocket();
 		this.clients_attentios = new LinkedList<ClientAttention>();
 		this.online = true;
-		try {
-			System.out.println("server_online at: "+ InetAddress.getLocalHost());
-		} catch (UnknownHostException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 	}
 
 	private void startServerSocket() {
 		try {
 			this.serverSocket = new ServerSocket(this.port);
 			this.online = true;
-			System.out.println("socket_opened");
+			try {
+				System.out.println("server_online at: "+ InetAddress.getLocalHost());
+			} catch (UnknownHostException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -117,9 +113,8 @@ public class Server extends Observable implements Runnable, Observer {
 				clientAttention.getSocket_atention().close();
 			}
 			this.online=false;
-			//this.serverSocket.close();
-			this.serverSocket = null;
-			System.err.println("ServerSocket closed");
+			
+			System.err.println("Server die");
 			
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
