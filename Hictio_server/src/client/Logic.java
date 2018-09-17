@@ -7,7 +7,7 @@ import processing.core.PApplet;
 
 public class Logic implements Observer {
 	private PApplet app;
-	private Client c = Client.getInstance(this);
+	//private Client c = Client.getInstance(this);
 
 	public Logic(PApplet app) {
 		this.app = app;
@@ -42,13 +42,13 @@ public class Logic implements Observer {
 				app.ellipse(50 + (i * 50), 50, 20, 20);
 				switch (i) {
 				case 0:
-					c.startSocket();
+					Client.getInstance(this).startSocket();
 					break;
 				case 1:
-					c.forceDisconnection();
+					Client.getInstance(this).forceDisconnection();
 					break;
 				case 2:
-
+					Client.getInstance(this).sendString("fish");
 					break;
 				case 3:
 

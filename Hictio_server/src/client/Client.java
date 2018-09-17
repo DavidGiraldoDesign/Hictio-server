@@ -16,21 +16,24 @@ public class Client extends Observable implements Runnable {
 	private int port;
 
 	private Client(Observer observer) {
-		System.out.println("constructor");
+		// System.out.println("constructor");
 		addObserver(observer);
 		this.port = 5000;
 		// this.startSocket();
 	}
 
 	public void startSocket() {
-		if (this.socket==null) {
+		if (this.socket == null) {
 			try {
 				System.out.println("Starting to socket");
-				//Use "127.0.0.1" to connect to the local host - The pc itself
-				this.socket = new Socket(InetAddress.getByName("127.0.0.1"), this.port);
-				//Use the IP that shows the Server console to connect.
+				// Use "127.0.0.1" to connect to the local host - The pc itself
+				this.socket = new Socket(InetAddress.getByName("192.168.1.112"), this.port);
+				// Use the IP that shows the Server console to connect.
 				connectionRequest();
 				online = true;
+				// ===================================
+				new Thread(client).start();
+				// ===================================
 				System.out.println("Connection state: " + online);
 			} catch (IOException e) {
 				setChanged();
@@ -38,31 +41,34 @@ public class Client extends Observable implements Runnable {
 				System.err.println("Connection state: " + online);
 				clearChanged();
 			}
-		}else {
+		} else {
 			System.out.println("You are aready connected");
 		}
-		
+
 	}
 
 	public static Client getInstance(Observer observer) {
-		System.out.println("Enter to getInstance");
-		System.err.println("Online: "+online + " Instance: " + client);
+		// System.out.println("Enter to getInstance");
+		// System.err.println("Online: "+online + " Instance: " + client);
 		if (client == null && online == false) {
 			client = new Client(observer);
-			new Thread(client).start();
-			System.err.println("Online: "+online + " Instance: " + client);
+			// new Thread(client).start();
+			// System.err.println("Online: "+online + " Instance: " + client);
 		}
 		return client;
 	}
 
 	@Override
 	public void run() {
-
 		while (online) {
 			// =>
+			System.out.println("hey");
+			// if (online) {
 			this.receiveString();
+			// }
+
 			try {
-				Thread.sleep(100);
+				Thread.sleep(60);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
@@ -75,6 +81,9 @@ public class Client extends Observable implements Runnable {
 			DataInputStream input = new DataInputStream(this.socket.getInputStream());
 			String message = input.readUTF();
 			System.out.println(message);
+			if(message.contains("x")){
+				this.forceDisconnection();
+			}
 		} catch (IOException e) {
 			online = false;
 			setChanged();
@@ -85,16 +94,20 @@ public class Client extends Observable implements Runnable {
 	}
 
 	public void sendString(String message) {
-		try {
-			DataOutputStream output = new DataOutputStream(socket.getOutputStream());
-			output.writeUTF(message);
-			output.flush();
-			System.out.println("Send: " + message);
-		} catch (IOException e) {
-			e.printStackTrace();
-			online = false;
-
+		if (this.socket != null) {
+			try {
+				DataOutputStream output = new DataOutputStream(socket.getOutputStream());
+				output.writeUTF(message);
+				output.flush();
+				System.out.println("Send: " + message);
+			} catch (IOException e) {
+				e.printStackTrace();
+				online = false;
+				this.forceDisconnection();
+				// =========================> little change
+			}
 		}
+
 	}
 
 	private void connectionRequest() {
@@ -121,7 +134,7 @@ public class Client extends Observable implements Runnable {
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-		}else {
+		} else {
 			System.out.println("You are aready disconnected");
 		}
 
