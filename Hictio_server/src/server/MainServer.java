@@ -25,7 +25,7 @@ public class MainServer extends PApplet { // Main have to extend from Processing
 
 	@Override
 	public void draw() {
-		super.draw();
+		//super.draw();
 		l.execute();
 	}
 

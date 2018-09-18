@@ -100,6 +100,10 @@ public class Server extends Observable implements Runnable, Observer {
 				clearChanged();
 				clients_attentios.remove(cli_atte);
 				System.out.println("Client attentions size: " + this.clients_attentios.size());
+			}else if(((String)obj).contains("fish")) {
+				setChanged();
+				notifyObservers(obj);
+				clearChanged();
 			}
 			
 		}

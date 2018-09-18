@@ -80,6 +80,9 @@ public class ClientAttention extends Observable implements Runnable {
 			input = new DataInputStream(socket_atention.getInputStream());
 			//int val = Integer.parseInt(input.readUTF());
 			String val = input.readUTF();
+			setChanged();
+			notifyObservers(val);
+			clearChanged();
 			System.out.println("Receive: "+val+" from user "+this.getId());
 			this.sendString("Hey from the server side");
 		}catch (IOException e) {
