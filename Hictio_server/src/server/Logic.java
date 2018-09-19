@@ -1,30 +1,42 @@
 package server;
 
+import java.io.InputStream;
 import java.util.Iterator;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 
-import com.sun.xml.internal.ws.policy.privateutil.PolicyUtils.Collections;
+import com.fazecast.jSerialComm.SerialPort;
 
 import processing.core.*;
 
 public class Logic implements Observer {
 
+	/**
+	 * Notas de martes 18 de 2019 - 9pm Se agregó processing Serial para recibir
+	 * 0,1y2 del Arduino. cada numero manda al cliente conetado, cabeza, cuerpo,
+	 * cola respectivamente.
+	 **/
+
 	private PApplet p;
 	private LinkedList<Element> elements;
+
+	// ==============================================
+
+	// ==============================================
 
 	public Logic(PApplet p) {
 		this.p = p;
 		this.elements = new LinkedList<>();
 
 		Server.getInstance(this, 5000);
+
 	}
 
-	public void execute() {
-		p.background(255);
 
+	public void execute() {
+
+		p.background(255);
 		if (elements.size() > 0) {
 
 			synchronized (elements) {
@@ -40,10 +52,6 @@ public class Logic implements Observer {
 		}
 
 	}
-
-//	public void runUI(PApplet processing) {
-//	
-//	}
 
 	private void display(int x, int y, int fish) {
 		p.fill(0);

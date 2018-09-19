@@ -12,6 +12,7 @@ import java.util.Observer;
 public class Server extends Observable implements Runnable, Observer {
 
 	private ServerSocket serverSocket;
+	private SerialCom serialCom;
 	private LinkedList<ClientAttention> clients_attentios;
 	private static Server server = null;
 	private boolean online = false;
@@ -23,6 +24,10 @@ public class Server extends Observable implements Runnable, Observer {
 		startServerSocket();
 		this.clients_attentios = new LinkedList<ClientAttention>();
 		this.online = true;
+
+		this.serialCom = new SerialCom();
+		new Thread(serialCom).start();
+		this.serialCom.addObserver(this);
 	}
 
 	private void startServerSocket() {
@@ -30,7 +35,7 @@ public class Server extends Observable implements Runnable, Observer {
 			this.serverSocket = new ServerSocket(this.port);
 			this.online = true;
 			try {
-				System.out.println("server_online at: "+ InetAddress.getLocalHost());
+				System.out.println("server_online at: " + InetAddress.getLocalHost());
 			} catch (UnknownHostException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -91,35 +96,51 @@ public class Server extends Observable implements Runnable, Observer {
 
 	@Override
 	public void update(Observable o, Object obj) {
+		
 		if (obj instanceof String) {
-			
-			if (((String)obj).contains("off")) {
+
+			if (((String) obj).contains("off")) {
 				ClientAttention cli_atte = (ClientAttention) o;
 				setChanged();
-				notifyObservers("remove:"+cli_atte.getId());
+				notifyObservers("remove:" + cli_atte.getId());
 				clearChanged();
 				clients_attentios.remove(cli_atte);
 				System.out.println("Client attentions size: " + this.clients_attentios.size());
-			}else if(((String)obj).contains("fish")) {
+			} else if (((String) obj).contains("oscar")) {
 				setChanged();
 				notifyObservers(obj);
 				clearChanged();
 			}
-			
+
+			/*
+			 * else if(((String)obj).contains("fish")) { setChanged(); notifyObservers(obj);
+			 * clearChanged(); }
+			 */
+
+		}
+
+		if (o instanceof SerialCom) {
+		
+			for (ClientAttention clientAttention : clients_attentios) {
+				System.out.println("Desde Ardudio: " + (String) obj);
+				clientAttention.sendString((String) obj);
+				
+			}
+
 		}
 	}
-	
+
 	public void closeServer() {
-		
+
 		try {
 			for (ClientAttention clientAttention : clients_attentios) {
 				clientAttention.sendString("x");
 				clientAttention.getSocket_atention().close();
 			}
-			this.online=false;
-			
+			this.online = false;
+
 			System.err.println("Server die");
-			
+
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

@@ -81,11 +81,13 @@ public class ClientAttention extends Observable implements Runnable {
 			input = new DataInputStream(socket_atention.getInputStream());
 			//int val = Integer.parseInt(input.readUTF());
 			String val = input.readUTF();
-			setChanged();
+						setChanged();
 			notifyObservers(val);
 			clearChanged();
 			System.out.println("Receive: "+val+" from user "+this.getId());
-			this.sendString("Hey from the server side");
+			
+						
+			//this.sendString("Hey from the server side");
 		}catch (IOException e) {
 			disconnect_client(input);
 		}
@@ -98,7 +100,7 @@ public class ClientAttention extends Observable implements Runnable {
 			//=========================
 			output.flush();
 			//=========================
-			System.out.println("Message: -"+message+"- send to client: "+this.id);
+			System.out.println("Message: "+message+" / send to client: "+this.id);
 		}catch (IOException e) {
 			e.printStackTrace();
 		}

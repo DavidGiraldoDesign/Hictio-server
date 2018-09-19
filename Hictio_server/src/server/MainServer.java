@@ -2,8 +2,10 @@ package server; //Packege's name in min
 
 import processing.core.*; //Import processing
 
+
 public class MainServer extends PApplet { // Main have to extend from Processing
 	private Logic l; // Instance of Logic
+
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
@@ -21,12 +23,14 @@ public class MainServer extends PApplet { // Main have to extend from Processing
 	public void setup() {
 		super.setup();
 		l = new Logic(this);
+	
 	}
 
 	@Override
 	public void draw() {
-		//super.draw();
+		// super.draw();
 		l.execute();
+
 	}
 
 	@Override
