@@ -61,12 +61,7 @@ public class Client extends Observable implements Runnable {
 	@Override
 	public void run() {
 		while (online) {
-			// =>
-			System.out.println("hey");
-			// if (online) {
 			this.receiveString();
-			// }
-
 			try {
 				Thread.sleep(60);
 			} catch (InterruptedException e) {
@@ -81,7 +76,7 @@ public class Client extends Observable implements Runnable {
 			DataInputStream input = new DataInputStream(this.socket.getInputStream());
 			String message = input.readUTF();
 			System.out.println(message);
-			if(message.contains("x")){
+			if (message.contains("x")) {
 				this.forceDisconnection();
 			}
 		} catch (IOException e) {

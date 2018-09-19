@@ -51,6 +51,7 @@ public class ClientAttention extends Observable implements Runnable {
 			input = new DataInputStream(socket_atention.getInputStream());
 			String request = input.readUTF();
 			if (request.contains("conect")) {
+				sendString("acuario");
 				System.out.println("connection_accepted");				
 			}
 		} catch (IOException e) {
