@@ -32,6 +32,11 @@ public class MainServer extends PApplet { // Main have to extend from Processing
 		l.execute();
 
 	}
+	
+	@Override
+		public void keyPressed() {
+			l.keyPressed();
+		}
 
 	@Override
 	public void exit() {

@@ -10,30 +10,68 @@ import java.util.Observable;
 
 public class ClientAttention extends Observable implements Runnable {
 
-	//Socket that writes and read, it conects the client to the server
+	// Socket that writes and read, it conects the client to the server
 	private Socket socket_atention;
 	private boolean online;
 	private int id;
-	
-	public ClientAttention(Socket reference,int id) {
-		this.socket_atention =reference;
+	private int fishId;
+	private boolean onFish = false;
+
+	public ClientAttention(Socket reference, int id) {
+		this.socket_atention = reference;
 		this.online = true;
-		this.id=id;
+		this.id = id;
 		answerClientRequest();
 	}
+
+	/*
+	 * __________________________Fish
+	 * methods_________________________________________________
+	 */
+
+//	private void assignFish(String value) {
+//		setChanged();
+//		notifyObservers(value);
+//		clearChanged();
+//		if (value.contains("fish")) {
+//			this.fishId = Integer.parseInt(value.split("_")[value.split("_").length - 1]);
+//			System.out.println("User: " + this.getId() + " conected with fish: " + this.getFishId());
+//			this.sendString("onfish_" + this.getFishId());
+//		}
+//
+//	}
+
+	public int getFishId() {
+		return fishId;
+	}
 	
+	public void setFishId(int fishId) {
+		this.fishId = fishId;
+	}
+
+	public boolean isOnFish() {
+		return this.onFish;
+	}
+
+	public void setOnFish(boolean onFish) {
+		this.onFish = onFish;
+	}
+	/*
+	 * ___________________________________________________________________________
+	 */
+
 	public int getId() {
 		return id;
 	}
-	
+
 	public Socket getSocket_atention() {
 		return socket_atention;
 	}
-	
+
 	@Override
 	public void run() {
-		while(online) {
-			//Blocking operation, ClientAttention is waiting for the client
+		while (online) {
+			// Blocking operation, ClientAttention is waiting for the client
 			receiveString();
 			try {
 				Thread.sleep(60);
@@ -41,31 +79,31 @@ public class ClientAttention extends Observable implements Runnable {
 				e.printStackTrace();
 			}
 		}
-		
+
 	}
-	
-	private void answerClientRequest () {
-		//Input
+
+	private void answerClientRequest() {
+		// Input
 		DataInputStream input = null;
 		try {
 			input = new DataInputStream(socket_atention.getInputStream());
 			String request = input.readUTF();
 			if (request.contains("conect")) {
 				sendString("acuario");
-				System.out.println("connection_accepted");				
+				System.out.println("connection_accepted");
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
 			disconnect_client(input);
 		}
 	}
-	
+
 	private void disconnect_client(DataInput input) {
 		setChanged();
 		System.out.println("Connection lost with:" + id);
-		this.online= false;
+		this.online = false;
 		try {
-			((FilterInputStream)input).close();
+			((FilterInputStream) input).close();
 			this.socket_atention.close();
 			this.socket_atention = null;
 		} catch (IOException e) {
@@ -74,34 +112,34 @@ public class ClientAttention extends Observable implements Runnable {
 		notifyObservers("off");
 		clearChanged();
 	}
-	
+
 	private void receiveString() {
 		DataInputStream input = null;
 		try {
 			input = new DataInputStream(socket_atention.getInputStream());
-			//int val = Integer.parseInt(input.readUTF());
+			// int val = Integer.parseInt(input.readUTF());
 			String val = input.readUTF();
-						setChanged();
+			// this.assignFish(val);
+			setChanged();
 			notifyObservers(val);
 			clearChanged();
-			System.out.println("Receive: "+val+" from user "+this.getId());
-			
-						
-			//this.sendString("Hey from the server side");
-		}catch (IOException e) {
+			System.out.println("Receive: " + val + " from user " + this.getId());
+
+			// this.sendString("Hey from the server side");
+		} catch (IOException e) {
 			disconnect_client(input);
 		}
 	}
-	
+
 	public void sendString(String message) {
 		try {
 			DataOutputStream output = new DataOutputStream(socket_atention.getOutputStream());
 			output.writeUTF(message);
-			//=========================
+			// =========================
 			output.flush();
-			//=========================
-			System.out.println("Message: "+message+" / send to client: "+this.id);
-		}catch (IOException e) {
+			// =========================
+			System.out.println("Message: " + message + " / send to client: " + this.id);
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
