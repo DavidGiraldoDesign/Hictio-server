@@ -24,27 +24,11 @@ public class ClientAttention extends Observable implements Runnable {
 		answerClientRequest();
 	}
 
-	/*
-	 * __________________________Fish
-	 * methods_________________________________________________
-	 */
-
-//	private void assignFish(String value) {
-//		setChanged();
-//		notifyObservers(value);
-//		clearChanged();
-//		if (value.contains("fish")) {
-//			this.fishId = Integer.parseInt(value.split("_")[value.split("_").length - 1]);
-//			System.out.println("User: " + this.getId() + " conected with fish: " + this.getFishId());
-//			this.sendString("onfish_" + this.getFishId());
-//		}
-//
-//	}
-
+	// ---------------------------------------------------
 	public int getFishId() {
 		return fishId;
 	}
-	
+
 	public void setFishId(int fishId) {
 		this.fishId = fishId;
 	}
@@ -56,9 +40,15 @@ public class ClientAttention extends Observable implements Runnable {
 	public void setOnFish(boolean onFish) {
 		this.onFish = onFish;
 	}
-	/*
-	 * ___________________________________________________________________________
-	 */
+
+	private void disconnectFish(String val) {
+		if (val.contains("out")) {
+			this.fishId = 0;
+			this.onFish = false;
+			System.out.println("Client: "+this.getId()+ " Out fish!");
+		}
+	}
+	// ---------------------------------------------------
 
 	public int getId() {
 		return id;
@@ -119,13 +109,11 @@ public class ClientAttention extends Observable implements Runnable {
 			input = new DataInputStream(socket_atention.getInputStream());
 			// int val = Integer.parseInt(input.readUTF());
 			String val = input.readUTF();
-			// this.assignFish(val);
+			disconnectFish(val);
 			setChanged();
 			notifyObservers(val);
 			clearChanged();
 			System.out.println("Receive: " + val + " from user " + this.getId());
-
-			// this.sendString("Hey from the server side");
 		} catch (IOException e) {
 			disconnect_client(input);
 		}
@@ -138,7 +126,7 @@ public class ClientAttention extends Observable implements Runnable {
 			// =========================
 			output.flush();
 			// =========================
-			System.out.println("Message: " + message + " / send to client: " + this.id);
+			//System.out.println("Message: " + message + " / send to client: " + this.id);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

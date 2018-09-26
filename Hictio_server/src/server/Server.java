@@ -98,7 +98,7 @@ public class Server extends Observable implements Runnable, Observer {
 
 	public void verifyFish(int fish, int part) {
 		for (ClientAttention clientAttention : clients_attentios) {
-			if (clientAttention.getFishId() == fish) {
+			if (clientAttention.getFishId() == fish && clientAttention.isOnFish() == true) {
 				switch (part) {
 				case 0:
 					clientAttention.sendString("head");
@@ -116,18 +116,18 @@ public class Server extends Observable implements Runnable, Observer {
 		}
 	}
 
-	private void assignFish(ClientAttention cliente, String value) {
+	private void assignFish(ClientAttention client, String value) {
 
 		int fishId = Integer.parseInt(value.split("_")[value.split("_").length - 1]);
-	
+
 		for (ClientAttention clientAttention : clients_attentios) {
 			if (clientAttention.isOnFish() == true && clientAttention.getFishId() == fishId) {
-				cliente.sendString("Sorry, you have to wait");
-			}else {
-				cliente.setFishId(fishId);
-				cliente.setOnFish(true);
-				cliente.sendString("onfish_" + cliente.getFishId());
-				System.out.println("User: " + fishId + " conected with fish: " + cliente.getFishId());
+				client.sendString("Sorry, you have to wait");
+			} else {
+				client.setFishId(fishId);
+				client.setOnFish(true);
+				client.sendString("onfish_" + client.getFishId());
+				System.out.println("User: " + client.getId() + " conected with fish: " + client.getFishId());
 			}
 		}
 
@@ -148,28 +148,12 @@ public class Server extends Observable implements Runnable, Observer {
 				System.out.println("Client attentions size: " + this.clients_attentios.size());
 			} else if (((String) obj).contains("fish")) {
 
-				this.assignFish((ClientAttention)o,(String) obj);
-//				setChanged();
-//				notifyObservers(obj);
-//				clearChanged();
-			}
+				this.assignFish((ClientAttention) o, (String) obj);
 
-			/*
-			 * else if(((String)obj).contains("fish")) { setChanged(); notifyObservers(obj);
-			 * clearChanged(); }
-			 */
+			}
 
 		}
 
-//		if (o instanceof SerialCom) {
-//		
-//			for (ClientAttention clientAttention : clients_attentios) {
-//				System.out.println("Desde Ardudio: " + (String) obj);
-//				clientAttention.sendString((String) obj);
-//				
-//			}
-//
-//		}
 	}
 
 	public void closeServer() {

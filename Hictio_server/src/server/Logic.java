@@ -1,7 +1,5 @@
 package server;
 
-//import java.util.Iterator;
-//import java.util.LinkedList;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -20,65 +18,20 @@ public class Logic implements Observer {
 	 **/
 	private char[][] fishKeys = { { 'w', 'a', 's' }, { 'd', 'f', 'g' } };
 	private PApplet p;
-	// private LinkedList<Element> elements;
-
-	// ==============================================
-
-	// ==============================================
 
 	public Logic(PApplet p) {
 		this.p = p;
-		// this.elements = new LinkedList<>();
-
 		Server.getInstance(this, 5000);
-
 	}
 
 	public void execute() {
 
 		p.background(255);
-//		if (elements.size() > 0) {
-//
-//			synchronized (elements) {
-//
-//				Iterator<Element> iter = elements.iterator();
-//				while (iter.hasNext()) {
-//					Element element = (Element) iter.next();
-//					display(element.getX(), element.getY(), element.getFish());
-//
-//				}
-//			}
-//
-//		}
 
 	}
 
-//	private void display(int x, int y, int fish) {
-//		p.fill(0);
-//		p.rect(x, y, 50, 50);
-//		p.fill(255);
-//		p.textSize(32);
-//		p.text(fish, x + 25, y + 25);
-//	}
-
 	@Override
 	public void update(Observable o, Object arg) {
-		// TODO Auto-generated method stub
-
-//		if (arg instanceof String) {
-//			String msn = (String) arg;
-//			if (msn.contains("fish")) {
-//				System.out.println("=====" + arg);
-//				int fish = Integer.parseInt(msn.split("-")[1]);
-//				synchronized (elements) {
-//					elements.add(
-//							new Element(((int) p.random(0, p.width - 50)), ((int) p.random(0, p.height - 50)), fish));
-//					elements.getLast().start();
-//					System.out.println("Elementos: " + elements.size());
-//				}
-//			}
-//
-//		}
 
 	}
 
@@ -87,8 +40,8 @@ public class Logic implements Observer {
 		for (int i = 0; i < fishKeys.length; i++) {
 			for (int j = 0; j < fishKeys[i].length; j++) {
 				if (p.key == fishKeys[i][j]) {
-					System.out.println("Fish: " + i + " Touching key: "+fishKeys[i][j]);
-					Server.getInstance(this, 5000).verifyFish(i,j);
+					System.out.println("Fish: " + i + " Touching key: " + fishKeys[i][j]);
+					Server.getInstance(this, 5000).verifyFish(i, j);
 				}
 			}
 		}
