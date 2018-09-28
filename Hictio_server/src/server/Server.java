@@ -95,18 +95,22 @@ public class Server extends Observable implements Runnable, Observer {
 	}
 
 	/* __________________________________________________________ */
-
+// Verify fish client has the fish with that int, and what part has been touch
+// Depending on what part was touched, the server send the case.
 	public void verifyFish(int fish, int part) {
 		for (ClientAttention clientAttention : clients_attentios) {
 			if (clientAttention.getFishId() == fish && clientAttention.isOnFish() == true) {
 				switch (part) {
 				case 0:
+
 					clientAttention.sendString("head");
 					break;
 				case 1:
+
 					clientAttention.sendString("middle");
 					break;
 				case 2:
+
 					clientAttention.sendString("tail");
 					break;
 
@@ -115,8 +119,11 @@ public class Server extends Observable implements Runnable, Observer {
 			}
 		}
 	}
-	//Verify into the collection of clients that nobody is already conected with the same fish.
-	//If nobody if connected with that fish, the server will asign that fich to the client
+
+	// Verify into the collection of clients that nobody is already connected with
+	// the same fish.
+	// If nobody if connected with that fish, the server will asign that fish to the
+	// client
 	private void assignFish(ClientAttention client, String value) {
 
 		int fishId = Integer.parseInt(value.split("_")[value.split("_").length - 1]);
@@ -142,9 +149,9 @@ public class Server extends Observable implements Runnable, Observer {
 
 			if (((String) obj).contains("off")) {
 				ClientAttention cli_atte = (ClientAttention) o;
-				setChanged();
-				notifyObservers("remove:" + cli_atte.getId());
-				clearChanged();
+//				setChanged();
+//				notifyObservers("remove:" + cli_atte.getId());
+//				clearChanged();
 				clients_attentios.remove(cli_atte);
 				System.out.println("Client attentions size: " + this.clients_attentios.size());
 			} else if (((String) obj).contains("fish")) {
