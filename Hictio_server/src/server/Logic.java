@@ -40,7 +40,7 @@ public class Logic implements Observer {
 		for (int i = 0; i < fishKeys.length; i++) {
 			for (int j = 0; j < fishKeys[i].length; j++) {
 				if (p.key == fishKeys[i][j]) {
-					System.out.println("Fish: " + i + " Touching key: " + fishKeys[i][j]);
+					System.out.println("Fish: " + i + " Key touched: " + fishKeys[i][j]);
 					Server.getInstance(this, 5000).verifyFish(i, j);
 				}
 			}
