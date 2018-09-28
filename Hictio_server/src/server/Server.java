@@ -115,7 +115,8 @@ public class Server extends Observable implements Runnable, Observer {
 			}
 		}
 	}
-
+	//Verify into the collection of clients that nobody is already conected with the same fish.
+	//If nobody if connected with that fish, the server will asign that fich to the client
 	private void assignFish(ClientAttention client, String value) {
 
 		int fishId = Integer.parseInt(value.split("_")[value.split("_").length - 1]);
