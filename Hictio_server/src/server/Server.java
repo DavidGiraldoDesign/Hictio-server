@@ -140,6 +140,26 @@ public class Server extends Observable implements Runnable, Observer {
 		}
 
 	}
+
+	// Send a fake beacon signal to the clients - just for testing
+
+	public void sendFakeBeacon(char key) {
+		// TODO Auto-generated method stub
+		switch (key) {
+		case '0':
+			for (ClientAttention clientAttention : clients_attentios) {
+				clientAttention.sendString("beacon_oscar");
+			}
+			break;
+		case '1':
+			for (ClientAttention clientAttention : clients_attentios) {
+				clientAttention.sendString("beacon_piranha");
+			}
+			break;
+
+		}
+		System.out.println("Send fake " + key + " beacon");
+	}
 	/* __________________________________________________________ */
 
 	@Override
@@ -158,6 +178,10 @@ public class Server extends Observable implements Runnable, Observer {
 
 				this.assignFish((ClientAttention) o, (String) obj);
 
+			} else if (((String) obj).contains("haptic")) {
+				setChanged();
+				notifyObservers((String) obj);
+				clearChanged();
 			}
 
 		}
