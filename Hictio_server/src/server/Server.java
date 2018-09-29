@@ -12,7 +12,7 @@ import java.util.Observer;
 public class Server extends Observable implements Runnable, Observer {
 
 	private ServerSocket serverSocket;
-	//private SerialCom serialCom;
+	// private SerialCom serialCom;
 	private LinkedList<ClientAttention> clients_attentios;
 	private static Server server = null;
 	private boolean online = false;
@@ -50,6 +50,12 @@ public class Server extends Observable implements Runnable, Observer {
 			server = new Server(observer, port);
 			new Thread(server).start();
 		}
+
+		return server;
+	}
+
+	// Method that does not need parameters, but it is dangerous
+	public static Server getInstance() {
 
 		return server;
 	}
@@ -132,6 +138,26 @@ public class Server extends Observable implements Runnable, Observer {
 		}
 
 	}
+	// Send a fake beacon signal to the clients - just for testing
+
+	public void sendFakeBeacon(char key) {
+		// TODO Auto-generated method stub
+		switch (key) {
+		case '0':
+			for (ClientAttention clientAttention : clients_attentios) {
+				clientAttention.sendString("beacon_oscar");
+			}
+			break;
+		case '1':
+			for (ClientAttention clientAttention : clients_attentios) {
+				clientAttention.sendString("beacon_piranha");
+			}
+			break;
+
+		}
+		System.out.println("Send fake " + key + " beacon");
+	}
+
 	/* __________________________________________________________ */
 
 	@Override
@@ -150,6 +176,10 @@ public class Server extends Observable implements Runnable, Observer {
 
 				this.assignFish((ClientAttention) o, (String) obj);
 
+			} else if(((String) obj).contains("haptic")) {
+				setChanged();
+				notifyObservers((String) obj);
+				clearChanged();
 			}
 
 		}
