@@ -44,25 +44,25 @@ public class Logic implements Observer {
 
 	// Play beep
 	private void play(AudioPlayer a) {
-
-		System.out.println("Posistion before= " + a.position() + " Length(): " + a.length());
 		a.play();
-
 		if (a.position() >= 800) {
-			// a.pause();
 			a.rewind();
 		}
-		System.out.println("Posistion after= " + a.position() + " Length(): " + a.length());
 	}
 
 	@Override
 	public void update(Observable o, Object arg) {
+		if (arg instanceof String) {
+			if (((String) arg).contains("haptic")) {
+				this.play(beep);
+			}
+		}
 
 	}
 
 	public void keyPressed() {
 		Server.getInstance(this, 5000).sendFakeBeacon(p.key);
-		this.play(beep);
+
 		for (int i = 0; i < fishKeys.length; i++) {
 			for (int j = 0; j < fishKeys[i].length; j++) {
 				if (p.key == fishKeys[i][j]) {
