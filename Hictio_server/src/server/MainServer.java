@@ -16,7 +16,7 @@ public class MainServer extends PApplet { // Main have to extend from Processing
 	@Override
 	public void settings() {
 		super.settings();
-		size(500, 500);
+		size(200, 200);
 	}
 
 	@Override

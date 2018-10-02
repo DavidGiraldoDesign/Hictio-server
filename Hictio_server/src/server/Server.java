@@ -149,16 +149,18 @@ public class Server extends Observable implements Runnable, Observer {
 		case '0':
 			for (ClientAttention clientAttention : clients_attentios) {
 				clientAttention.sendString("beacon_oscar");
+				System.out.println("Send fake " + key + " beacon");
 			}
 			break;
 		case '1':
 			for (ClientAttention clientAttention : clients_attentios) {
 				clientAttention.sendString("beacon_piranha");
+				System.out.println("Send fake " + key + " beacon");
 			}
 			break;
 
 		}
-		System.out.println("Send fake " + key + " beacon");
+		
 	}
 	/* __________________________________________________________ */
 
