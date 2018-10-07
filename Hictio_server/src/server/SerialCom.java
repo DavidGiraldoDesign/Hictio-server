@@ -1,67 +1,55 @@
 package server;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.Observable;
 
 import com.fazecast.jSerialComm.SerialPort;
 
 public class SerialCom extends Observable implements Runnable {
-	private char soundTrack;
+	private String sensorCardUID = "";
 	private SerialPort comPort;
 	private InputStream in;
 
 	public SerialCom() {
-		// TODO Auto-generated constructor stub
 		this.comPort = SerialPort.getCommPorts()[1];
-		
 	}
 
 	@Override
 	public void run() {
-		// TODO Auto-generated method stub
 		while (true) {
-			//SerialPort comPort = SerialPort.getCommPorts()[1];
 			comPort.openPort();
 			comPort.setComPortTimeouts(SerialPort.TIMEOUT_READ_SEMI_BLOCKING, 100, 0);
 			this.in = comPort.getInputStream();
 
-			try {
-				while (true) {
-					while (comPort.bytesAvailable() == 0)
-						Thread.sleep(100);
-					soundTrack = (char) in.read();
-					System.out.println(soundTrack);
-				
-					switch (soundTrack) {
-					case '0':
-						setChanged();
-						notifyObservers(new String("head"));
-						clearChanged();
-						in.close();
-						break;
-					case '1':
-						setChanged();
-						notifyObservers(new String("middle"));
-						clearChanged();
-						in.close();
-						break;
-					case '2':
-						setChanged();
-						notifyObservers(new String("tail"));
-						clearChanged();
-						in.close();
-						break;
+			while (comPort.bytesAvailable() == 0)
 
-					default:
-						break;
-					}
 			
-					//in.close();
+				try {
+					
+					Thread.sleep(100);
+
+				} catch (InterruptedException e) {
+					e.printStackTrace();
 				}
-			} catch (Exception e) {
-				e.printStackTrace();
+
+
+			if (comPort.bytesAvailable() > 0) {
+				for (int i = 0; i < 8; i++) {
+					try {
+						this.sensorCardUID += ((char) in.read());
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+				}
+				setChanged();
+				notifyObservers(new String("PC-true-" + this.sensorCardUID));
+				clearChanged();
+				this.sensorCardUID = "";
 			}
+
 			comPort.closePort();
+
 		}
 
 	}

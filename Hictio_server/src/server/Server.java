@@ -12,7 +12,7 @@ import java.util.Observer;
 public class Server extends Observable implements Runnable, Observer {
 
 	private ServerSocket serverSocket;
-	// private SerialCom serialCom;
+	private SerialCom serialCom;
 	private LinkedList<ClientAttention> clients_attentios;
 	private static Server server = null;
 	private boolean online = false;
@@ -25,9 +25,9 @@ public class Server extends Observable implements Runnable, Observer {
 		this.clients_attentios = new LinkedList<ClientAttention>();
 		this.online = true;
 
-//		this.serialCom = new SerialCom();
-//		new Thread(serialCom).start();
-//		this.serialCom.addObserver(this);
+		this.serialCom = new SerialCom();
+		new Thread(serialCom).start();
+		this.serialCom.addObserver(this);
 	}
 
 	private void startServerSocket() {
@@ -160,7 +160,7 @@ public class Server extends Observable implements Runnable, Observer {
 			break;
 
 		}
-		
+
 	}
 	/* __________________________________________________________ */
 
@@ -168,19 +168,23 @@ public class Server extends Observable implements Runnable, Observer {
 	public void update(Observable o, Object obj) {
 
 		if (obj instanceof String) {
-
-			if (((String) obj).contains("off")) {
+			String msn = ((String) obj);
+			if (msn.contains("offClient")) {
 				ClientAttention cli_atte = (ClientAttention) o;
 //				setChanged();
 //				notifyObservers("remove:" + cli_atte.getId());
 //				clearChanged();
 				clients_attentios.remove(cli_atte);
 				System.out.println("Client attentions size: " + this.clients_attentios.size());
-			} else if (((String) obj).contains("fish")) {
+			} else if (msn.contains("fish")) {
 
 				this.assignFish((ClientAttention) o, (String) obj);
 
-			} else if (((String) obj).contains("haptic")) {
+			} else if (msn.contains("haptic")) {
+				setChanged();
+				notifyObservers((String) obj);
+				clearChanged();
+			} else if(msn.contains("PC")) {
 				setChanged();
 				notifyObservers((String) obj);
 				clearChanged();

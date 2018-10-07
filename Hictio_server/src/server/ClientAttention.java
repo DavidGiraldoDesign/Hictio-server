@@ -14,6 +14,7 @@ public class ClientAttention extends Observable implements Runnable {
 	private Socket socket_atention;
 	private boolean online;
 	private int id;
+	private String UID;
 	private int fishId;
 	private boolean onFish = false;
 
@@ -45,10 +46,14 @@ public class ClientAttention extends Observable implements Runnable {
 		if (val.contains("out")) {
 			this.fishId = 0;
 			this.onFish = false;
-			System.out.println("Client: "+this.getId()+ " Out fish!");
+			System.out.println("Client: " + this.getId() + " Out fish!");
 		}
 	}
+
 	// ---------------------------------------------------
+	public String getUID() {
+		return UID;
+	}
 
 	public int getId() {
 		return id;
@@ -78,10 +83,11 @@ public class ClientAttention extends Observable implements Runnable {
 		try {
 			input = new DataInputStream(socket_atention.getInputStream());
 			String request = input.readUTF();
-			if (request.contains("conect")) {
-				sendString("acuario");
-				System.out.println("connection_accepted");
-			}
+			this.UID = request;
+
+			sendString("acuario");
+			System.out.println("connection_accepted");
+
 		} catch (IOException e) {
 			e.printStackTrace();
 			disconnect_client(input);
@@ -99,7 +105,7 @@ public class ClientAttention extends Observable implements Runnable {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		notifyObservers("off");
+		notifyObservers("offClient");
 		clearChanged();
 	}
 
@@ -126,7 +132,7 @@ public class ClientAttention extends Observable implements Runnable {
 			// =========================
 			output.flush();
 			// =========================
-			//System.out.println("Message: " + message + " / send to client: " + this.id);
+			// System.out.println("Message: " + message + " / send to client: " + this.id);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
