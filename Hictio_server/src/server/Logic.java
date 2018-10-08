@@ -35,6 +35,7 @@ public class Logic implements Observer {
 	// ================================================= Using a PCD
 	private boolean allowTouchPCD_A = false;
 	private int timerToAllowTouch = 0;
+	private String PCDClient = "";
 
 	private char[][] fishKeys = { { 'w', 'a', 's' }, { 'd', 'f', 'g' } };
 	private String[] fishNames = { "oscar", "piranha", "ghost" };
@@ -52,7 +53,11 @@ public class Logic implements Observer {
 		if (allowTouchPCD_A == true) {
 			timerToAllowTouch++;
 			if (timerToAllowTouch >= 200) {
+				
 				allowTouchPCD_A = false;
+				PCDClient="";
+				System.out.println("allowTouchPCD_A: " + allowTouchPCD_A);
+				System.out.println("PCDClient: " + PCDClient);
 				
 			}
 		}
@@ -79,7 +84,9 @@ public class Logic implements Observer {
 				try {
 					if (allowTouchPCD_A == false) {
 						allowTouchPCD_A = Boolean.parseBoolean(msn.split("-")[1]);
+						PCDClient = msn.split("-")[2];
 						System.out.println("allowTouchPCD_A: " + allowTouchPCD_A);
+						System.out.println("PCDClient: " + PCDClient);
 					}else {
 					
 					}
@@ -99,7 +106,8 @@ public class Logic implements Observer {
 				for (int j = 0; j < fishKeys[i].length; j++) {
 					if (p.key == fishKeys[i][j]) {
 						System.out.println("Fish: " + fishNames[i] + " Key touched: " + fishKeys[i][j]);
-						Server.getInstance(this, 5000).verifyFish(i, j);
+						//Server.getInstance(this, 5000).verifyFish(i, j);
+						Server.getInstance(this, 5000).sendPCDInteractions(PCDClient,fishNames[i],fishKeys[i][j]);
 					}
 				}
 			}

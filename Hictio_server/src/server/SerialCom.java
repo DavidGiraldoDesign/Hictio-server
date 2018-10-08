@@ -19,7 +19,7 @@ public class SerialCom extends Observable implements Runnable {
 	public void run() {
 		while (true) {
 			comPort.openPort();
-			comPort.setComPortTimeouts(SerialPort.TIMEOUT_READ_SEMI_BLOCKING, 100, 0);
+			comPort.setComPortTimeouts(SerialPort.TIMEOUT_READ_SEMI_BLOCKING, 50, 0);
 			this.in = comPort.getInputStream();
 
 			while (comPort.bytesAvailable() == 0)
@@ -27,7 +27,7 @@ public class SerialCom extends Observable implements Runnable {
 			
 				try {
 					
-					Thread.sleep(100);
+					Thread.sleep(1);
 
 				} catch (InterruptedException e) {
 					e.printStackTrace();
@@ -38,6 +38,7 @@ public class SerialCom extends Observable implements Runnable {
 				for (int i = 0; i < 8; i++) {
 					try {
 						this.sensorCardUID += ((char) in.read());
+						System.err.println("============>");
 					} catch (IOException e) {
 						e.printStackTrace();
 					}

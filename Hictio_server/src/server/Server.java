@@ -94,6 +94,20 @@ public class Server extends Observable implements Runnable, Observer {
 		}
 	}
 
+	/** _______________________________________________________________ */
+
+	public void sendPCDInteractions(String PCDClient,String fish, char c) {
+		// TODO Auto-generated method stub
+		for (ClientAttention clientAttention : clients_attentios) {
+			if (clientAttention.getUID().contains(PCDClient)) {
+				clientAttention.sendString(fish+"-"+c);
+			} else {
+
+			}
+			
+		}
+	}
+
 	/* __________________________________________________________ */
 // Verify fish client has the fish with that int, and what part has been touch
 // Depending on what part was touched, the server send the case.
@@ -184,7 +198,7 @@ public class Server extends Observable implements Runnable, Observer {
 				setChanged();
 				notifyObservers((String) obj);
 				clearChanged();
-			} else if(msn.contains("PC")) {
+			} else if (msn.contains("PC")) {
 				setChanged();
 				notifyObservers((String) obj);
 				clearChanged();
