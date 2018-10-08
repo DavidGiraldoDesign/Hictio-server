@@ -38,7 +38,7 @@ public class SerialCom extends Observable implements Runnable {
 				for (int i = 0; i < 8; i++) {
 					try {
 						this.sensorCardUID += ((char) in.read());
-						System.err.println("============>");
+				
 					} catch (IOException e) {
 						e.printStackTrace();
 					}

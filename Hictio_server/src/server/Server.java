@@ -96,15 +96,15 @@ public class Server extends Observable implements Runnable, Observer {
 
 	/** _______________________________________________________________ */
 
-	public void sendPCDInteractions(String PCDClient,String fish, char c) {
+	public void sendPCDInteractions(String PCDClient, String fish, char c) {
 		// TODO Auto-generated method stub
 		for (ClientAttention clientAttention : clients_attentios) {
 			if (clientAttention.getUID().contains(PCDClient)) {
-				clientAttention.sendString(fish+"-"+c);
+				clientAttention.sendString(fish + "-" + c);
 			} else {
 
 			}
-			
+
 		}
 	}
 
@@ -137,23 +137,23 @@ public class Server extends Observable implements Runnable, Observer {
 	// Verify into the collection of clients that nobody is already connected with
 	// the same fish.
 	// If nobody if connected with that fish, the server will asign that fish to the
-	// client
-	private void assignFish(ClientAttention client, String value) {
 
-		int fishId = Integer.parseInt(value.split("_")[value.split("_").length - 1]);
-
-		for (ClientAttention clientAttention : clients_attentios) {
-			if (clientAttention.isOnFish() == true && clientAttention.getFishId() == fishId) {
-				client.sendString("Sorry, you have to wait");
-			} else {
-				client.setFishId(fishId);
-				client.setOnFish(true);
-				client.sendString("onfish_" + client.getFishId());
-				System.out.println("User: " + client.getId() + " conected with fish: " + client.getFishId());
-			}
-		}
-
-	}
+//	private void assignFish(ClientAttention client, String value) {
+//
+//		int fishId = Integer.parseInt(value.split("_")[value.split("_").length - 1]);
+//
+//		for (ClientAttention clientAttention : clients_attentios) {
+//			if (clientAttention.isOnFish() == true && clientAttention.getFishId() == fishId) {
+//				client.sendString("Sorry, you have to wait");
+//			} else {
+//				client.setFishId(fishId);
+//				client.setOnFish(true);
+//				client.sendString("onfish_" + client.getFishId());
+//				System.out.println("User: " + client.getId() + " conected with fish: " + client.getFishId());
+//			}
+//		}
+//
+//	}
 
 	// Send a fake beacon signal to the clients - just for testing
 
@@ -192,7 +192,7 @@ public class Server extends Observable implements Runnable, Observer {
 				System.out.println("Client attentions size: " + this.clients_attentios.size());
 			} else if (msn.contains("fish")) {
 
-				this.assignFish((ClientAttention) o, (String) obj);
+				//this.assignFish((ClientAttention) o, (String) obj);
 
 			} else if (msn.contains("haptic")) {
 				setChanged();
