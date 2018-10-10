@@ -96,7 +96,11 @@ public class ClientAttention extends Observable implements Runnable {
 
 	private void disconnect_client(DataInput input) {
 		setChanged();
-		System.out.println("Connection lost with:" + id);
+		System.err.println("=============================");
+		System.err.println("=============================");
+		System.err.println("Connection lost with:" + id);
+		System.err.println("=============================");
+		System.err.println("=============================");
 		this.online = false;
 		try {
 			((FilterInputStream) input).close();

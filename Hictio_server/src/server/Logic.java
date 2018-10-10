@@ -87,7 +87,7 @@ public class Logic implements Observer {
 					if (allowTouchPCD_A == false) {
 						allowTouchPCD_A = Boolean.parseBoolean(msn.split("-")[1]);
 						PCDClient = msn.split("-")[2];
-						Server.getInstance(this, 5000).sendPCDModels(PCDClient);
+						Server.getInstance(this, 5000).sendMoldelsAboutToTouch(PCDClient);
 						System.out.println("allowTouchPCD_A: " + allowTouchPCD_A);
 						System.out.println("PCDClient: " + PCDClient);
 						
@@ -104,6 +104,7 @@ public class Logic implements Observer {
 	}
 
 	public void keyPressed() {
+		
 		Server.getInstance(this, 5000).sendFakeBeacon(p.key);
 		if (allowTouchPCD_A == true) {
 			for (int i = 0; i < fishKeys.length; i++) {
@@ -111,7 +112,7 @@ public class Logic implements Observer {
 					if (p.key == fishKeys[i][j]) {
 						System.out.println("Fish: " + fishNames[i] + " Key touched: " + fishKeys[i][j]);
 						//Server.getInstance(this, 5000).verifyFish(i, j);
-						Server.getInstance(this, 5000).sendPCDInteractions(PCDClient,fishNames[i],fishKeys[i][j]);
+						Server.getInstance(this, 5000).sendModelPartTouching(PCDClient,fishNames[i],fishKeys[i][j]);
 					}
 				}
 			}

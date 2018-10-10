@@ -97,7 +97,7 @@ public class Server extends Observable implements Runnable, Observer {
 	/** _______________________________________________________________ */
 //Alert the client witch fishes is he about to touch
 	
-	public void sendPCDModels(String PCDStop) {
+	public void sendMoldelsAboutToTouch(String PCDStop) {
 		for (ClientAttention clientAttention : clients_attentios) {
 			if (clientAttention.getUID().contains(PCDStop)) {
 				System.err.println("x");
@@ -107,10 +107,10 @@ public class Server extends Observable implements Runnable, Observer {
 
 	}
 	
-	public void sendPCDInteractions(String PCDClient, String fish, char c) {
+	public void sendModelPartTouching(String PCDClient, String fish, char part) {
 		for (ClientAttention clientAttention : clients_attentios) {
 			if (clientAttention.getUID().contains(PCDClient)) {
-				clientAttention.sendString(fish + "-" + c);
+				clientAttention.sendString(fish + "-" + part);
 			} else {
 
 			}
@@ -198,7 +198,9 @@ public class Server extends Observable implements Runnable, Observer {
 //				notifyObservers("remove:" + cli_atte.getId());
 //				clearChanged();
 				clients_attentios.remove(cli_atte);
-				System.out.println("Client attentions size: " + this.clients_attentios.size());
+				System.err.println("=============================");
+				System.err.println("Client attentions size: " + this.clients_attentios.size());
+				System.err.println("=============================");
 			} else if (msn.contains("fish")) {
 
 				// this.assignFish((ClientAttention) o, (String) obj);
