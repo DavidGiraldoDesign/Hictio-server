@@ -77,7 +77,9 @@ public class Logic implements Observer {
 		if (arg instanceof String) {
 			String msn = ((String) arg);
 			if (msn.contains("haptic")) {
+				
 				this.play(beep);
+				
 			} else if (msn.contains("PC")) {
 				timerToAllowTouch=0;
 
@@ -85,8 +87,10 @@ public class Logic implements Observer {
 					if (allowTouchPCD_A == false) {
 						allowTouchPCD_A = Boolean.parseBoolean(msn.split("-")[1]);
 						PCDClient = msn.split("-")[2];
+						Server.getInstance(this, 5000).sendPCDModels(PCDClient);
 						System.out.println("allowTouchPCD_A: " + allowTouchPCD_A);
 						System.out.println("PCDClient: " + PCDClient);
+						
 					}else {
 					
 					}

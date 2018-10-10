@@ -95,44 +95,53 @@ public class Server extends Observable implements Runnable, Observer {
 	}
 
 	/** _______________________________________________________________ */
+//Alert the client witch fishes is he about to touch
+	
+	public void sendPCDModels(String PCDStop) {
+		for (ClientAttention clientAttention : clients_attentios) {
+			if (clientAttention.getUID().contains(PCDStop)) {
+				System.err.println("x");
+				clientAttention.sendString("oscar-piranha");
+			}
+		}
 
+	}
+	
 	public void sendPCDInteractions(String PCDClient, String fish, char c) {
-		// TODO Auto-generated method stub
 		for (ClientAttention clientAttention : clients_attentios) {
 			if (clientAttention.getUID().contains(PCDClient)) {
 				clientAttention.sendString(fish + "-" + c);
 			} else {
 
 			}
-
 		}
 	}
 
 	/* __________________________________________________________ */
 // Verify fish client has the fish with that int, and what part has been touch
 // Depending on what part was touched, the server send the case.
-	public void verifyFish(int fish, int part) {
-		for (ClientAttention clientAttention : clients_attentios) {
-			if (clientAttention.getFishId() == fish && clientAttention.isOnFish() == true) {
-				switch (part) {
-				case 0:
-
-					clientAttention.sendString("head");
-					break;
-				case 1:
-
-					clientAttention.sendString("middle");
-					break;
-				case 2:
-
-					clientAttention.sendString("tail");
-					break;
-
-				}
-				break;
-			}
-		}
-	}
+//	public void verifyFish(int fish, int part) {
+//		for (ClientAttention clientAttention : clients_attentios) {
+//			if (clientAttention.getFishId() == fish && clientAttention.isOnFish() == true) {
+//				switch (part) {
+//				case 0:
+//
+//					clientAttention.sendString("head");
+//					break;
+//				case 1:
+//
+//					clientAttention.sendString("middle");
+//					break;
+//				case 2:
+//
+//					clientAttention.sendString("tail");
+//					break;
+//
+//				}
+//				break;
+//			}
+//		}
+//	}
 
 	// Verify into the collection of clients that nobody is already connected with
 	// the same fish.
@@ -192,7 +201,7 @@ public class Server extends Observable implements Runnable, Observer {
 				System.out.println("Client attentions size: " + this.clients_attentios.size());
 			} else if (msn.contains("fish")) {
 
-				//this.assignFish((ClientAttention) o, (String) obj);
+				// this.assignFish((ClientAttention) o, (String) obj);
 
 			} else if (msn.contains("haptic")) {
 				setChanged();
