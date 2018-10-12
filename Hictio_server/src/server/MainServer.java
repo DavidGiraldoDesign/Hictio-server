@@ -23,6 +23,7 @@ public class MainServer extends PApplet { // Main have to extend from Processing
 	public void setup() {
 		super.setup();
 		l = new Logic(this);
+		frameRate(60);
 	
 	}
 

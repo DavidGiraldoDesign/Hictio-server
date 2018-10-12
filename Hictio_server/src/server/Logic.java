@@ -46,13 +46,16 @@ public class Logic implements Observer {
 		beep = minim.loadFile("music/Beep_Short.mp3");
 		Server.getInstance(this, 5000);
 	}
-
+	
+	int seconds(int s) {
+		return 60*s; 
+	}
 	public void execute() {
 
 		p.background(255);
 		if (allowTouchPCD_A == true) {
 			timerToAllowTouch++;
-			if (timerToAllowTouch >= 200) {
+			if (timerToAllowTouch >= seconds(60)) {
 				
 				allowTouchPCD_A = false;
 				PCDClient="";
