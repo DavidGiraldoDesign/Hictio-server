@@ -11,7 +11,7 @@ public class Logic implements Observer {
 
 	public Logic(PApplet app) {
 		this.app = app;
-		// Client.getInstance(this);
+		Client.getInstance(this);
 	}
 
 	public void execute() {

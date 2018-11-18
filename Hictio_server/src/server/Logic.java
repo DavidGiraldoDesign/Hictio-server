@@ -46,19 +46,19 @@ public class Logic implements Observer {
 		beep = minim.loadFile("music/Beep_Short.mp3");
 		Server.getInstance(this, 5000);
 	}
-	
-	int seconds(int s) {
-		return 60*s; 
-	}
-	public void execute() {
 
+	int seconds(int s) {
+		return 60 * s;
+	}
+
+	public void execute() {
+		//System.out.println(timerToAllowTouch+ " >= "+seconds(10));
 		p.background(255);
 		if (allowTouchPCD_A == true) {
 			timerToAllowTouch++;
-			if (timerToAllowTouch >= seconds(60)) {
-				
+			if (timerToAllowTouch >= seconds(10)) {
 				allowTouchPCD_A = false;
-				PCDClient="";
+				PCDClient = "";
 				System.out.println("allowTouchPCD_A: " + allowTouchPCD_A);
 				System.out.println("PCDClient: " + PCDClient);
 				
@@ -80,11 +80,11 @@ public class Logic implements Observer {
 		if (arg instanceof String) {
 			String msn = ((String) arg);
 			if (msn.contains("haptic")) {
-				
+
 				this.play(beep);
-				
+
 			} else if (msn.contains("PC")) {
-				timerToAllowTouch=0;
+				timerToAllowTouch = 0;
 
 				try {
 					if (allowTouchPCD_A == false) {
@@ -93,13 +93,13 @@ public class Logic implements Observer {
 						Server.getInstance(this, 5000).sendMoldelsAboutToTouch(PCDClient);
 						System.out.println("allowTouchPCD_A: " + allowTouchPCD_A);
 						System.out.println("PCDClient: " + PCDClient);
-						
-					}else {
-					
+
+					} else {
+
 					}
-					
+
 				} catch (ArrayIndexOutOfBoundsException e) {
-					 this.allowTouchPCD_A = false;
+					this.allowTouchPCD_A = false;
 				}
 			}
 		}
@@ -107,16 +107,16 @@ public class Logic implements Observer {
 	}
 
 	public void keyPressed() {
-		
+
 		Server.getInstance(this, 5000).sendFakeBeacon(p.key);
 		if (allowTouchPCD_A == true) {
 			for (int i = 0; i < fishKeys.length; i++) {
 				for (int j = 0; j < fishKeys[i].length; j++) {
 					if (p.key == fishKeys[i][j]) {
-						timerToAllowTouch=0;
+						timerToAllowTouch = 0;
 						System.out.println("Fish: " + fishNames[i] + " Key touched: " + fishKeys[i][j]);
-						//Server.getInstance(this, 5000).verifyFish(i, j);
-						Server.getInstance(this, 5000).sendModelPartTouching(PCDClient,fishNames[i],fishKeys[i][j]);
+						// Server.getInstance(this, 5000).verifyFish(i, j);
+						Server.getInstance(this, 5000).sendModelPartTouching(PCDClient, fishNames[i], fishKeys[i][j]);
 					}
 				}
 			}

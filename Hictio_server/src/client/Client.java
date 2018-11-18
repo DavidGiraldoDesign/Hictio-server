@@ -11,7 +11,7 @@ import java.util.Observer;
 public class Client extends Observable implements Runnable {
 
 	private static Client client = null;
-	private Socket socket;
+	private Socket socket = null;
 	private static boolean online;
 	private int port;
 
@@ -19,7 +19,7 @@ public class Client extends Observable implements Runnable {
 		// System.out.println("constructor");
 		addObserver(observer);
 		this.port = 5000;
-		// this.startSocket();
+		this.startSocket();
 	}
 
 	public void startSocket() {
@@ -110,7 +110,8 @@ public class Client extends Observable implements Runnable {
 		try {
 			DataOutputStream output = new DataOutputStream(socket.getOutputStream());
 			// int envio = (int) (Math.random() * 255);
-			output.writeUTF("conect");
+			//output.writeUTF("conect");
+			output.writeUTF("afg987as");
 			output.flush();
 			System.out.println("Connection_request_sended");
 		} catch (IOException e) {

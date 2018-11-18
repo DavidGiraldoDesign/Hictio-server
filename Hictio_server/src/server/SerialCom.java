@@ -2,6 +2,7 @@ package server;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.Observable;
 
 import com.fazecast.jSerialComm.SerialPort;
@@ -10,9 +11,13 @@ public class SerialCom extends Observable implements Runnable {
 	private String sensorCardUID = "";
 	private SerialPort comPort;
 	private InputStream in;
+	private OutputStream out;
 
 	public SerialCom() {
-		this.comPort = SerialPort.getCommPorts()[1];
+		for (int i = 0; i < SerialPort.getCommPorts().length; i++) {
+			System.out.println("Port:"+ SerialPort.getCommPorts()[i]);
+		}
+		this.comPort = SerialPort.getCommPorts()[0];
 	}
 
 	@Override
